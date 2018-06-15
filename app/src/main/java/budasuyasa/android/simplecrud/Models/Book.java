@@ -1,21 +1,28 @@
 package budasuyasa.android.simplecrud.Models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
 /**
  * Created by asha on 4/23/2018.
- * Class to mapping book object
+ * Class to mapping book object implement Parcelable
+ * karena akan digunakan untuk passing object Book antar activity
  */
 
-public class Book {
+public class Book implements Parcelable{
 
     String id;
     String name;
-    String isbnn;
+    String isbn;
     String year;
     String author;
     String image;
     String description;
     String createdAt;
     String updatedAt;
+
 
     public String getId() {
         return id;
@@ -33,12 +40,12 @@ public class Book {
         this.name = name;
     }
 
-    public String getIsbnn() {
-        return isbnn;
+    public String getIsbn() {
+        return isbn;
     }
 
-    public void setIsbnn(String isbnn) {
-        this.isbnn = isbnn;
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
     public String getYear() {
@@ -89,4 +96,46 @@ public class Book {
         this.updatedAt = updatedAt;
     }
 
+    protected Book(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        isbn = in.readString();
+        year = in.readString();
+        author = in.readString();
+        image = in.readString();
+        description = in.readString();
+        createdAt = in.readString();
+        updatedAt = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(isbn);
+        dest.writeString(year);
+        dest.writeString(author);
+        dest.writeString(image);
+        dest.writeString(description);
+        dest.writeString(createdAt);
+        dest.writeString(updatedAt);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Book> CREATOR = new Parcelable.Creator<Book>() {
+        @Override
+        public Book createFromParcel(Parcel in) {
+            return new Book(in);
+        }
+
+        @Override
+        public Book[] newArray(int size) {
+            return new Book[size];
+        }
+    };
 }
